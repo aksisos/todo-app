@@ -58,7 +58,7 @@ export default class Task extends Component {
     return (
       <li className={classNames}>
         <div className="view">
-          <input className="toggle" type="checkbox" onClick={onCompleted} />
+          <input className="toggle" type="checkbox" checked={completed} onClick={onCompleted} />
           <label>
             <span className="description">{label}</span>
             <span className="created">{formatDistanceToNow(new Date(), { includeSeconds: true })}</span>
