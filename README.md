@@ -12,3 +12,7 @@ Now CLI 21.0.1
 Error! request to https://api.vercel.com/v13/now/deployments failed, reason: socket hang up
 
 я не знаю как это исправить
+
+залил вручную а не через now
+
+https://todo-app-delta-sandy.vercel.app/
