@@ -1,0 +1,7 @@
+.icon-play:after {
+	content: '▶';
+}
+
+.icon-pause:after {
+	content: '⏸';
+}

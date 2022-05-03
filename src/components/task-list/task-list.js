@@ -21,7 +21,7 @@ const TaskList = ({ todos, onDeleted, onEdit, onCompleted, onEditForm }) => {
     )
   })
 
-  return <ul className="todo-list">{elements}</ul>
+  return <ul className="list-group task-list">{elements}</ul>
 }
 
 TaskList.propTypes = {

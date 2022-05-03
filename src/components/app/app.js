@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { parse } from 'date-fns'
 
 import TaskList from '../task-list'
 import NewTaskForm from '../new-task-form'
@@ -6,19 +7,26 @@ import Footer from '../footer'
 import './app.css'
 
 export default class App extends Component {
-  maxid = 100
+  key = 0
+  id = 0
 
   state = {
     todoData: [this.createTodoItem('row row'), this.createTodoItem('fight'), this.createTodoItem('the power')],
     filter: 'all',
   }
 
-  createTodoItem(label) {
+  createTodoItem(label, min = 0, sec = 0) {
+
+    const parseTime = parse(`${min}:${sec}`, 'mm:ss', new Date())
+
     return {
       label,
       edit: false,
       completed: false,
-      id: this.maxid++,
+      key: this.key++,
+      id: this.id++,
+      dateCreated: new Date(),
+      timeLeft: parseTime,
     }
   }
 
@@ -38,10 +46,10 @@ export default class App extends Component {
     })
   }
 
-  addItem = (text) => {
+  addItem = (text, min, sec) => {
     if (text.trim() !== '') {
       this.setState(({ todoData }) => {
-        const newArray = [...todoData, this.createTodoItem(text)]
+        const newArray = [...todoData, this.createTodoItem(text, min, sec)]
         return { todoData: newArray }
       })
     }

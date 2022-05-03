@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
-import { formatDistanceToNow } from 'date-fns'
 import PropTypes from 'prop-types'
+
 import './task.css'
+import Time from './time'
+import TaskTimer from './task-timer'
 
 export default class Task extends Component {
   static propTypes = {
@@ -10,6 +12,9 @@ export default class Task extends Component {
     onCompleted: PropTypes.func,
     onEdit: PropTypes.func,
     onEditForm: PropTypes.func,
+    id: PropTypes.number.isRequired,
+    dateCreated: PropTypes.instanceOf(Date),
+    timeLeft: PropTypes.instanceOf(Date).isRequired
   }
 
   static defaultProps = {
@@ -18,6 +23,7 @@ export default class Task extends Component {
     onCompleted: () => {},
     onEdit: () => {},
     onEditForm: () => {},
+    dateCreated: {}
   }
 
   state = {
@@ -39,7 +45,7 @@ export default class Task extends Component {
   }
 
   render() {
-    const { label, onDeleted, onEdit, onCompleted, completed, edit } = this.props
+    const { label, onDeleted, onEdit, onCompleted, completed, edit, id, dateCreated, timeLeft } = this.props
 
     let classNames = ''
 
@@ -58,10 +64,11 @@ export default class Task extends Component {
     return (
       <li className={classNames}>
         <div className="view">
-          <input className="toggle" type="checkbox" checked={completed} onClick={onCompleted} />
+          <input className="toggle" type="checkbox" checked={completed} onChange={onCompleted} />
           <label>
-            <span className="description">{label}</span>
-            <span className="created">{formatDistanceToNow(new Date(), { includeSeconds: true })}</span>
+            <span className="title">{label}</span>
+            {timeLeft !== 0 ? <TaskTimer timeLeft={timeLeft} onCompleted={() => onCompleted(id)} completed={completed}/> : null}
+            <span className="created"><Time dateCreated={dateCreated}/></span>
           </label>
           <button className="icon icon-edit" onClick={onEdit}></button>
           <button className="icon icon-destroy" onClick={onDeleted}></button>
