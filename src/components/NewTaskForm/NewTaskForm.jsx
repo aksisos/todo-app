@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import './new-task-form.css'
+import './NewTaskForm.css'
 
 export default class NewTaskForm extends Component {
   static propTypes = {
@@ -18,26 +18,26 @@ export default class NewTaskForm extends Component {
     sec: '',
   }
 
-  onLabelChange = (e) => {
+  onLabelChange = (event) => {
     this.setState({
-      label: e.target.value,
+      label: event.target.value,
     })
   }
 
-  onSecChange = (e) => {
+  onSecChange = (event) => {
     this.setState({
-      sec: e.target.value
+      sec: event.target.value
     })
   }
 
-  onMinChange = (e) => {
+  onMinChange = (event) => {
     this.setState({
-      min: e.target.value
+      min: event.target.value
     })
   }
 
-  onSubmit = (e) => {
-    e.preventDefault()
+  onSubmit = (event) => {
+    event.preventDefault()
     let { min, sec } = this.state
     const { label } = this.state
     const { onAdded } = this.props

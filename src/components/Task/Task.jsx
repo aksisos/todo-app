@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import './task.css'
-import Time from './time'
-import TaskTimer from './task-timer'
+import './Task.css'
+import Time from './Time'
+import TaskTimer from './TaskTimer'
 
 export default class Task extends Component {
   static propTypes = {
@@ -27,19 +27,18 @@ export default class Task extends Component {
   }
 
   state = {
-    textEdit: this.props.label,
+    textEdit: this.props.label
   }
 
-  onLabelChange = (e) => {
-    console.log(e.target.value)
+  onLabelChange = (event) => {
     this.setState({
-      textEdit: e.target.value,
+      textEdit: event.target.value,
     })
   }
 
-  onSubmit = (e) => {
+  onSubmit = (event) => {
     const { id, onEdit } = this.props
-    e.preventDefault()
+    event.preventDefault()
     this.props.onEditForm(id, this.state.textEdit)
     onEdit()
   }

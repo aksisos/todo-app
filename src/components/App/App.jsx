@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import { parse } from 'date-fns'
 
-import TaskList from '../task-list'
-import NewTaskForm from '../new-task-form'
-import Footer from '../footer'
-import './app.css'
+import TaskList from '../TaskList'
+import NewTaskForm from '../NewTaskForm'
+import Footer from '../Footer'
+import './App.css'
 
 export default class App extends Component {
   key = 0
@@ -47,7 +47,7 @@ export default class App extends Component {
   }
 
   addItem = (text, min, sec) => {
-    if (text.trim() !== '') {
+    if (text.trim() !== '' && (min || sec)) {
       this.setState(({ todoData }) => {
         const newArray = [...todoData, this.createTodoItem(text, min, sec)]
         return { todoData: newArray }
@@ -81,7 +81,6 @@ export default class App extends Component {
   }
 
   editForm = (id, text) => {
-    console.log(id, text)
     this.setState(({ todoData }) => {
       const idx = todoData.findIndex((el) => el.id === id)
 
@@ -94,15 +93,12 @@ export default class App extends Component {
   }
 
   filterItems(items, filter) {
-    switch (filter) {
-    case 'all':
+    if (filter === 'all') {
       return items
-    case 'active':
+    } else if (filter === 'active') {
       return items.filter((el) => !el.completed)
-    case 'completed':
+    } else if (filter === 'completed') {
       return items.filter((el) => el.completed)
-    default:
-      return items
     }
   }
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import './task-timer.css'
+import './TaskTimer.css'
 import { format } from 'date-fns'
 import PropTypes from 'prop-types'
 
