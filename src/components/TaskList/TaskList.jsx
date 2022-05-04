@@ -6,13 +6,17 @@ import './TaskList.css'
 
 const TaskList = ({ todos, onDeleted, onEdit, onCompleted, onEditForm }) => {
   const elements = todos.map((item) => {
-    const { id, ...itemProps } = item
+    const { id, key, label, edit, completed, dateCreated, timeLeft } = item
 
     return (
       <Task
-        key={id}
+        label={label}
+        edit={edit}
+        completed={completed}
+        dateCreated={dateCreated}
+        timeLeft={timeLeft}
+        key={key}
         id={id}
-        {...itemProps}
         onDeleted={() => onDeleted(id)}
         onEdit={() => onEdit(id)}
         onCompleted={() => onCompleted(id)}
