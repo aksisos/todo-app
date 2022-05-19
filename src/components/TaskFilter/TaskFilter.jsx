@@ -1,42 +1,46 @@
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 
 import './TaskFilter.css'
 
-export default class TasksFilter extends Component {
-  static propTypes = {
+const TaskFilter = function TaskFilter({filter, onFilter}) {
+  TaskFilter.propTypes = {
     filter: PropTypes.string,
     onFilter: PropTypes.func,
   }
 
-  static defaultProps = {
+  TaskFilter.defaultProps = {
     filter: '',
     onFilter: () => {},
   }
 
-  buttons = [
+  const buttons = [
     { name: 'all', label: 'All' },
     { name: 'active', label: 'Active' },
     { name: 'completed', label: 'Completed' },
   ]
 
-  render() {
-    const { filter, onFilter } = this.props
-
-    const buttons = this.buttons.map(({ name, label }) => {
-      const isActive = filter === name
-      const clazz = isActive ? 'selected' : null
-      return (
-        <button className={clazz} key={name} onClick={() => onFilter(name)}>
-          {label}
-        </button>
-      )
-    })
-
+  const buttonsRender = buttons.map(({ name, label }) => {
+    const isActive = filter === name
+    const isSelected = isActive ? 'selected' : null
     return (
-      <ul className="filters">
-        <li>{buttons}</li>
-      </ul>
+      <li key={name}>
+        <button 
+          type='button'
+          className={isSelected} 
+          onClick={() => onFilter(name)}>
+          { label }
+        </button>
+      </li>
     )
-  }
+  })
+
+  return (
+    <ul className="filters">
+      { buttonsRender }
+    </ul>
+  )
+
 }
+
+export default TaskFilter

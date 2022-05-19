@@ -1,104 +1,87 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 
 import './NewTaskForm.css'
 
-export default class NewTaskForm extends Component {
-  static propTypes = {
+const NewTaskForm = function NewTaskForm({ onAdded }) {
+  NewTaskForm.propTypes = {
     onAdded: PropTypes.func,
   }
 
-  static defaultProps = {
+  NewTaskForm.defaultProps = {
     onAdded: () => {},
   }
 
-  state = {
-    label: '',
-    min: '',
-    sec: '',
+  const [ label, setLabel ] = useState('')
+  const [ min, setMin ] = useState('')
+  const [ sec, setSec ] = useState('')
+
+  const onLabelChange = (event) => {
+    setLabel(event.target.value)
   }
 
-  onLabelChange = (event) => {
-    this.setState({
-      label: event.target.value,
-    })
+  const onMinChange = (event) => {
+    setMin(event.target.value)
   }
 
-  onSecChange = (event) => {
-    this.setState({
-      sec: event.target.value
-    })
+  const onSecChange = (event) => {
+    setSec(event.target.value)
   }
 
-  onMinChange = (event) => {
-    this.setState({
-      min: event.target.value
-    })
-  }
-
-  onSubmit = (event) => {
+  const onSubmit = (event) => {
     event.preventDefault()
-    let { min, sec } = this.state
-    const { label } = this.state
-    const { onAdded } = this.props
 
-    if (!sec) {
-      sec = 0
-    }
-    if (!min) {
-      min = 0
-    }
+    const minute = min === '' ? 0 : min
+    const second = sec === '' ? 0 : sec
+
     if (sec >= 60) {
       return
     }
 
-    onAdded(label, min, sec)
-    this.setState({
-      label: '',
-      min: '',
-      sec: '',
-    })
+    
+    onAdded(label, minute, second)
+    setLabel('')
+    setMin('')
+    setSec('')
   }
 
-  render() {
-    const { label, sec, min } = this.state
-
-    return (
-      <form onSubmit={this.onSubmit} className="newtask-form">
-        <input
-          type="text"
-          name="inputText"
-          className="newtask"
-          onChange={this.onLabelChange}
-          placeholder="What needs to be done?"
-          value={label}
-          autoFocus
-        />
-        <input 
-          type="number"
-          name="minutes"
-          onChange={this.onMinChange}
-          className="newtask-form__timer" 
-          placeholder="Min" 
-          value={min}
-          min="0"
-        />
-        <input 
-          type="number"
-          name="seconds"
-          onChange={this.onSecChange}
-          className="newtask-form__timer" 
-          placeholder="Sec" 
-          value={sec}
-          min="0"
-          max="59"
-        />
-        <input 
-          type="submit" 
-          className="submit-form"
-          value="add"
-          onClick={this.onSubmit} /> 
-      </form>
-    )
-  }
+  return (
+    <form onSubmit={onSubmit} className="newtask-form">
+      <input
+        type="text"
+        name="inputText"
+        className="newtask"
+        onChange={onLabelChange}
+        placeholder="What needs to be done?"
+        value={label}
+        autoFocus
+      />
+      <input 
+        type="number"
+        name="minutes"
+        onChange={onMinChange}
+        className="newtask-form__timer" 
+        placeholder="Min" 
+        value={min}
+        min="0"
+      />
+      <input 
+        type="number"
+        name="seconds"
+        onChange={onSecChange}
+        className="newtask-form__timer" 
+        placeholder="Sec" 
+        value={sec}
+        min="0"
+        max="59"
+      />
+      <input 
+        type="submit" 
+        className="submit-form"
+        value="add"
+        onClick={onSubmit} /> 
+    </form>
+  )
 }
+
+export default NewTaskForm

@@ -5,25 +5,21 @@ import Task from '../Task'
 import './TaskList.css'
 
 const TaskList = ({ todos, onDeleted, onEdit, onCompleted, onEditForm }) => {
-  const elements = todos.map((item) => {
-    const { id, key, label, edit, completed, dateCreated, timeLeft } = item
-
-    return (
-      <Task
-        label={label}
-        edit={edit}
-        completed={completed}
-        dateCreated={dateCreated}
-        timeLeft={timeLeft}
-        key={key}
-        id={id}
-        onDeleted={() => onDeleted(id)}
-        onEdit={() => onEdit(id)}
-        onCompleted={() => onCompleted(id)}
-        onEditForm={onEditForm}
-      />
-    )
-  })
+  const elements = todos.map((item) => (
+    <Task
+      label={item.label}
+      edit={item.edit}
+      completed={item.completed}
+      dateCreated={item.dateCreated}
+      timeLeft={item.timeLeft}
+      key={item.key}
+      id={item.id}
+      onDeleted={() => onDeleted(item.id)}
+      onEdit={() => onEdit(item.id)}
+      onCompleted={() => onCompleted(item.id)}
+      onEditForm={onEditForm}
+    />
+  ))
 
   return <ul className="list-group task-list">{elements}</ul>
 }

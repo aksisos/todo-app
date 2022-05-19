@@ -1,68 +1,58 @@
-import React, { Component } from 'react'
+import React, { useState, useEffect } from 'react'
 import './TaskTimer.css'
 import { format } from 'date-fns'
 import PropTypes from 'prop-types'
 
-export default class TaskTimer extends Component {
-  static propTypes = {
+const TaskTimer = function TaskTimer({ timeLeftProp, onCompleted }) {
+  TaskTimer.propTypes = {
     onCompleted: PropTypes.func.isRequired,
-    timeLeft: PropTypes.instanceOf(Date).isRequired
+    timeLeftProp: PropTypes.instanceOf(Date).isRequired
   }
 
-  constructor({ timeLeft }) {
-    super()
-    this.state = {
-      timeLeft,
-      isPlay: false,
-    }
+  const [timeLeft, setTimeLeft] = useState(timeLeftProp)
+  const [isPlay, setIsPlay] = useState(false)
+  const [activeInterval, setActiveInterval] = useState('')
+
+  const onPlayClick = () => {
+    startTimer()
+    setIsPlay(true)
   }
 
-  onPlayClick = () => {
-    this.startTimer()
-    this.setState(() => ({ isPlay: true }))
-  }
-
-  componentDidUpdate() {
-    const { onCompleted } = this.props
-
-    if (format(this.state.timeLeft, 'mm:ss') === '00:00') {
-      if (this.state.isPlay === true) {
-        this.stopTimer()
+  useEffect(() => {
+    if (format(timeLeft, 'mm:ss') === '00:00') {
+      if (isPlay === true) {
+        stopTimer()
         onCompleted()
       }
     }
-  }
+  }, [activeInterval, onCompleted, timeLeft])
 
-  startTimer = () => {
-    const { timeLeft } = this.state
+  const startTimer = () => {
     let newTime = timeLeft
 
-    this.interval = setInterval(() => {
+    const interval = setInterval(() => {
       newTime -= 1000
-      this.setState(() => ({ timeLeft: newTime }))
+      setTimeLeft(newTime)
     }, 1000)
+    setActiveInterval(interval)
   }
 
-  stopTimer = () => {
-    clearInterval(this.interval)
-    this.setState(() => ({isPlay: false}))
+  const stopTimer = () => {
+    clearInterval(activeInterval)
+    setIsPlay(false)
   }
 
-  render() {
-    const { isPlay, timeLeft } = this.state
-    const playButton = <button className="icon icon-play" type="button" aria-label="play" onClick={this.onPlayClick} />
-    const pauseButton = (
-      <button className="icon icon-pause" type="button" aria-label="pause" onClick={this.stopTimer} />
-    )
-    const formatTimeLeft = format(timeLeft, 'mm:ss')
+  const playButton = <button className="icon icon-play" type="button" aria-label="play" onClick={onPlayClick} />
+  const pauseButton = <button className="icon icon-pause" type="button" aria-label="pause" onClick={stopTimer} />
+  const formatTimeLeft = format(timeLeft, 'mm:ss')
+  const button = isPlay ? pauseButton : playButton
 
-    const button = isPlay ? pauseButton : playButton
-
-    return (
-      <span className={formatTimeLeft === '00:00' ? 'hidden' : 'description'}>
-        {button}
-        {formatTimeLeft}
-      </span>
-    )
-  }
+  return (
+    <span className={formatTimeLeft === '00:00' ? 'hidden' : 'description'}>
+      {button}
+      {formatTimeLeft}
+    </span>
+  )
 }
+
+export default TaskTimer
